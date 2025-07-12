@@ -12,6 +12,7 @@ VISA_BULLETIN_URL = "https://travel.state.gov/content/travel/en/legal/visa-law0/
 PAGE_404_SIGNATURE = "sorry, we couldn't find that page on travel.state.gov. here are several suggestions to help you find what you’re looking for:"
 
 app = Flask(__name__)
+scheduler = BackgroundScheduler()
 
 def log(msg):
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {msg}")
@@ -49,12 +50,9 @@ def send_alert(message):
 def home():
     return "✅ Visa Bulletin Watcher Bot is running."
 
-def start_scheduler():
-    scheduler = BackgroundScheduler()
+if __name__ == "__main__":
+    # تشغيل المجدول داخل نفس التطبيق
     scheduler.add_job(check_visa_update, "interval", minutes=3)
     scheduler.start()
     log("⏰ جدولة الفحص بدأت بنجاح.")
-
-if __name__ == "__main__":
-    start_scheduler()  # نشغل المجدول مباشرة
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
