@@ -7,8 +7,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
-VISA_BULLETIN_URL = "https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin/2025/visa-bulletin-for-augest-2025.html"
-PAGE_404_SIGNATURE = "we’re sorry, we can’t find that page"
+VISA_BULLETIN_URL = "https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin/2025/visa-bulletin-for-august-2025.html"
+PAGE_404_SIGNATURE = "Sorry, we couldn't find that page on travel.state.gov. Here are several suggestions to help you find what you’re looking for:e"
 
 app = Flask(__name__)
 
