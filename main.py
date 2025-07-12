@@ -5,8 +5,8 @@ import requests
 from flask import Flask
 from bs4 import BeautifulSoup
 
-BOT_TOKEN = os.environ("TELEGRAM_BOT_TOKEN")
-CHAT_ID = os.environ("TELEGRAM_CHAT_ID")
+BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
+CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
 VISA_BULLETIN_URL = "https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin/2025/visa-bulletin-for-augest-2025.html"
 OLD_SIGNATURE_TEXT = "The Department of State will issue the August Visa Bulletin"
