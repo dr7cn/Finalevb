@@ -51,8 +51,7 @@ def home():
     return "✅ Visa Bulletin Watcher Bot is running."
 
 if __name__ == "__main__":
-    # تشغيل المجدول داخل نفس التطبيق
-    scheduler.add_job(check_visa_update, "interval", minutes=3)
+    scheduler.add_job(check_visa_update, "interval", minutes=3, next_run_time=datetime.now())  # << هذا السطر مهم
     scheduler.start()
     log("⏰ جدولة الفحص بدأت بنجاح.")
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
