@@ -9,26 +9,33 @@ BOT_TOKEN = os.environ["TELEGRAM_BOT_TOKEN"]
 CHAT_ID = os.environ["TELEGRAM_CHAT_ID"]
 
 VISA_BULLETIN_URL = "https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin/2025/visa-bulletin-for-augest-2025.html"
-OLD_SIGNATURE_TEXT = "The Department of State will issue the August Visa Bulletin"
-CHECK_INTERVAL = 180  # 3 دقائق
+ERROR_SIGNATURE = "Sorry, we couldn't find that page on travel.state.gov. Here are several suggestions to help you find what you’re looking for".lower()
+
+CHECK_INTERVAL = 120  # كل 3 دقائق
 
 app = Flask(__name__)
 
 def check_visa_update():
+    already_notified = False
     while True:
         try:
             res = requests.get(VISA_BULLETIN_URL, timeout=10)
             if res.status_code == 200:
                 soup = BeautifulSoup(res.text, "html.parser")
-                page_text = soup.get_text()
-                if OLD_SIGNATURE_TEXT not in page_text:
-                    send_alert("🔔 من المحتمل صدور نشرة فيزا جديدة! راجع الموقع الآن.")
+                page_text = soup.get_text().lower()
+
+                if ERROR_SIGNATURE not in page_text:
+                    if not already_notified:
+                        send_alert("🔔 تم تحديث الصفحة! من المحتمل صدور نشرة فيزا جديدة. راجع الرابط الآن.")
+                        already_notified = True
+                    else:
+                        print("🔁 الصفحة الجديدة موجودة ولكن تم الإشعار سابقًا.")
                 else:
-                    print("✅ لا يوجد تغيير في الصفحة.")
+                    print("⏳ لم يتم صدور النشرة بعد (صفحة 404).")
             else:
-                print("⚠️ فشل في الوصول للموقع.")
+                print("⚠️ فشل في الوصول للموقع (Status Code:", res.status_code, ")")
         except Exception as e:
-            print("❌ خطأ:", e)
+            print("❌ خطأ أثناء التحقق:", e)
         time.sleep(CHECK_INTERVAL)
 
 def send_alert(message):
@@ -39,7 +46,7 @@ def send_alert(message):
     }
     try:
         requests.post(url, data=data)
-        print("📨 تم إرسال تنبيه.")
+        print("📨 تم إرسال التنبيه.")
     except Exception as e:
         print("⚠️ فشل في إرسال التنبيه:", e)
 
@@ -47,6 +54,7 @@ def send_alert(message):
 def home():
     return "Visa Bulletin Watcher Bot is running."
 
+# بدء تشغيل التحقق في خلفية الخادم
 threading.Thread(target=check_visa_update, daemon=True).start()
 
 if __name__ == "__main__":
