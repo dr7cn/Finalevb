@@ -4,7 +4,6 @@ from flask import Flask
 from bs4 import BeautifulSoup
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime
-import threading
 
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
@@ -56,14 +55,6 @@ def start_scheduler():
     scheduler.start()
     log("⏰ جدولة الفحص بدأت بنجاح.")
 
-    # تأكد من بقاء التطبيق حي
-    try:
-        while True:
-            pass
-    except KeyboardInterrupt:
-        scheduler.shutdown()
-
 if __name__ == "__main__":
-    from threading import Thread
-    Thread(target=start_scheduler, daemon=True).start()
+    start_scheduler()  # نشغل المجدول مباشرة
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
