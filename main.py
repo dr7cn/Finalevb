@@ -64,7 +64,6 @@ def start_scheduler():
         scheduler.shutdown()
 
 if __name__ == "__main__":
-    # تشغيل المجدول في thread خاص بدون daemon حتى لا يتوقف
-    thread = threading.Thread(target=start_scheduler)
-    thread.start()
+    from threading import Thread
+    Thread(target=start_scheduler, daemon=True).start()
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
