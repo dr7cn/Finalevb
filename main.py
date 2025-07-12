@@ -8,7 +8,7 @@ BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
 VISA_BULLETIN_URL = "https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin/2025/visa-bulletin-for-august-2025.html"
-PAGE_404_SIGNATURE = "Sorry, we couldn't find that page on travel.state.gov. Here are several suggestions to help you find what you’re looking for:e"
+PAGE_404_SIGNATURE = "sorry, we couldn't find that page on travel.state.gov. here are several suggestions to help you find what you’re looking for:"
 
 app = Flask(__name__)
 
@@ -49,6 +49,7 @@ def home():
 scheduler = BackgroundScheduler()
 scheduler.add_job(check_visa_update, "interval", minutes=3)
 scheduler.start()
+print("⏰ جدولة الفحص بدأت بنجاح.")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
