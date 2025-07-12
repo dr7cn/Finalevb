@@ -51,5 +51,7 @@ scheduler.add_job(check_visa_update, "interval", minutes=3)
 scheduler.start()
 print("⏰ جدولة الفحص بدأت بنجاح.")
 
+check_visa_update()  # ← تشغيل أولي عند بدء التشغيل
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
