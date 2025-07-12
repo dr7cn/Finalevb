@@ -63,7 +63,7 @@ def start_scheduler():
     except KeyboardInterrupt:
         scheduler.shutdown()
 
-if if __name__ == "__main__":
+if  __name__ == "__main__":
     # تشغيل المجدول في thread خاص بدون daemon حتى لا يتوقف
     thread = threading.Thread(target=start_scheduler)
     thread.start()
